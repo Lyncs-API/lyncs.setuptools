@@ -35,8 +35,8 @@ def test_cmake():
 
     dist = Distribution()
     build = CMakeBuild(dist)
-    build.extensions = [CMakeExtension("test", "tests", ["-DMESSAGE=test1234"])]
-    build.build_lib = "tests"
-    build.build_temp = "tests/tmp"
+    build.extensions = [CMakeExtension("test", "test", ["-DMESSAGE=test1234"])]
+    build.build_lib = "test"
+    build.build_temp = "test/tmp"
 
     assert "test1234" in capture_print(build.run)
