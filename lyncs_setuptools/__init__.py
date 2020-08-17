@@ -10,7 +10,7 @@ from .description import *
 from .classifiers import *
 from .cmake import *
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 
 def complete_kwargs(*args, **kwargs):
