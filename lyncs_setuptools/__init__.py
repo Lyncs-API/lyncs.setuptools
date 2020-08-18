@@ -23,7 +23,7 @@ def complete_kwargs(*args, **kwargs):
     kwargs.setdefault("author", find_author())
     kwargs.setdefault("author_email", find_email())
     kwargs.setdefault("url", "https://lyncs-api.github.io")
-    kwargs.setdefault("download_url", "https://github.com/sbacchio/lyncs")
+    kwargs.setdefault("download_url", find_download_url())
     kwargs.setdefault("version", find_version())
 
     packages = find_packages()
