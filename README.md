@@ -46,17 +46,17 @@ The following are the parameter used by default in the setup
 
 ### Automatically deduced:
 
-- author: (git) author of first commit
-- author_email: (git) email of author of first commit
-- version: (python) value of `__version__` defined in __init__.py 
-- download_url: (git) remote address of origin
-- description: (file) first title of the README
-- long_description: (file) content of the README
-- long_description_content_type: (file) type of README (md/rst)
-- classifiers: (partially) version, license
-- keywords: (>3 chars or capital) words in description
+- **author**: (git) author of first commit
+- **author_email:** (git) email of author of first commit
+- **version:** (python) value of `__version__` defined in `__init__.py` 
+- **download_url:** (git) remote address of origin
+- **description:** (file) first title of the README
+- **long_description:** (file) content of the README
+- **long_description_content_type:** (file) type of README (md/rst)
+- **classifiers:** (partially) version, license
+- **keywords:** (>3 chars or capital) words in description
 
 ### Defaulted values
 
-- url: [lyncs-API.github.io]
-- classifiers: python 3-only, science
+- **url:** [lyncs-API.github.io]
+- **classifiers:** python 3-only, science
