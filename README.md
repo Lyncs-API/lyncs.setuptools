@@ -1,5 +1,11 @@
 # Setup tools for Lyncs
 
+[![python](https://img.shields.io/pypi/pyversions/lyncs_setuptools.svg?logo=python)](https://pypi.org/project/lyncs_setuptools/)
+[![pypi](https://img.shields.io/pypi/v/lyncs_setuptools.svg?logo=python)](https://pypi.org/project/lyncs_setuptools/)
+[![license](https://img.shields.io/github/license/lyncs-api/lyncs_setuptools?logo=github)](https://github.com/lyncs-api/lyncs_setuptools/blob/master/LICENSE)
+[![build & test](https://img.shields.io/github/workflow/status/lyncs-api/lyncs_setuptools/build%20&%20test?logo=github)](https://github.com/lyncs-api/lyncs_setuptools/actions)
+[![codecov](https://img.shields.io/codecov/c/github/lyncs-api/lyncs_setuptools?logo=codecov)](https://codecov.io/gh/lyncs-api/lyncs_setuptools)
+
 In this package we provide a wrap around the standard setutools to be used in Lyncs projects.
 
 ## Installation
