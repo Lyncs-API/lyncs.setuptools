@@ -1,20 +1,20 @@
 # Setup tools for Lyncs
 
-In this package we provide various setup tools used by Lyncs.
+In this package we provide a wrap around the standard setutools to be used in Lyncs projects.
 
 ## Installation
 
 The package can be installed via `pip`:
 
 ```
-pip install --user lyncs_setuptools
+pip install [--user] lyncs_setuptools
 ```
 
 ## Usage
 
-Lyncs' setuptools try to find most of the common setup parameters and defines its own `setup` function as in setuptools.
+Lyncs setuptools automizes the deduction of many setup.py options.
 
-One can use in a `setup.py` file the following script
+Its use in a `setup.py` file is the following
 
 ```
 from lyncs_setuptools import setup
@@ -22,15 +22,15 @@ from lyncs_setuptools import setup
 setup(package_name, **kwargs)
 ```
 
-where package_name is the name of the package and kwargs are a list of arguments replacing or adding to the one automatically deduced by lyncs_setuptools.
+where package_name is the name of the package and kwargs are a list of arguments additional or replacement of the one automatically deduced.
 
-For seeing the list of the automatically deduced options, run `lyncs_setuptools` from command line from the directory containing the setup.py.
+For seeing the list of the automatically deduced options, run `lyncs_setuptools` from command line in the directory containing the setup.py.
 
 ## CMakeExension
 
 Based on https://www.benjack.io/2017/06/12/python-cpp-tests.html we provide a CMakeExtension to support CMake files.
 
-One can add a CMakeExtension by doing
+A CMakeExtension can be added as follow
 
 ```
 from lyncs_setuptools import setup, CMakeExtension
@@ -39,3 +39,24 @@ ext = CMakeExtension(install_dir, source_dir='.', cmake_args=[])
 
 setup(package_name, ext_modules = [ext])
 ```
+
+## Setup parameters
+
+The following are the parameter used by default in the setup
+
+### Automatically deduced:
+
+- author: (git) author of first commit
+- author_email: (git) email of author of first commit
+- version: (python) value of `__version__` defined in __init__.py 
+- download_url: (git) remote address of origin
+- description: (file) first title of the README
+- long_description: (file) content of the README
+- long_description_content_type: (file) type of README (md/rst)
+- classifiers: (partially) version, license
+- keywords: (>3 chars or capital) words in description
+
+### Defaulted values
+
+- url: [lyncs-API.github.io]
+- classifiers: python 3-only, science
