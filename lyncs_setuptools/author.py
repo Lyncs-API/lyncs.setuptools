@@ -23,6 +23,8 @@ def is_git(directory=None):
 
 def get_git_repo(directory=None):
     "Returns the git repository in the directory (None=cwd)"
+    if Git(directory).rev_parse(is_shallow_repository=True) == "true":
+        Git(directory).fetch(unshallow=True)
     return Repo(Git(directory).rev_parse(show_toplevel=True))
 
 
@@ -35,14 +37,13 @@ def get_git_branch(branch, directory=None):
     "Returns the master of the git repository in the directory (None=cwd)"
     if not branch in get_git_repo(directory).heads:
         Git(directory).fetch("origin", branch)
-    if Git(directory).rev_parse(is_shallow_repository=True) == "true":
-        Git(directory).fetch("origin", branch, unshallow=True)
     return get_git_repo(directory).heads[branch]
 
 
 def get_git_author(directory=None):
     "Returns the author of the first git commit"
-    return get_git_branch("master", directory).log()[0].actor
+    *_, commit = get_git_repo(directory).iter_commits()
+    return commit.author
 
 
 def find_download_url():
