@@ -8,9 +8,10 @@ from .version import *
 from .data_files import *
 from .description import *
 from .classifiers import *
+from .author import *
 from .cmake import *
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 
 def complete_kwargs(*args, **kwargs):
@@ -19,10 +20,10 @@ def complete_kwargs(*args, **kwargs):
         assert "name" not in kwargs, "Repeated name parameter"
         kwargs["name"] = args[0]
 
-    kwargs.setdefault("author", "Simone Bacchio")
-    kwargs.setdefault("author_email", "s.bacchio@gmail.com")
-    kwargs.setdefault("url", "https://lyncs.readthedocs.io/en/latest")
-    kwargs.setdefault("download_url", "https://github.com/sbacchio/lyncs")
+    kwargs.setdefault("author", find_author())
+    kwargs.setdefault("author_email", find_email())
+    kwargs.setdefault("url", "https://lyncs-api.github.io")
+    kwargs.setdefault("download_url", find_download_url())
     kwargs.setdefault("version", find_version())
 
     packages = find_packages()
