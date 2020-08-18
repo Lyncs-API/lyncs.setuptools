@@ -27,7 +27,7 @@ def get_git_repo(directory=None):
 
 def get_git_author(directory=None):
     "Returns the author of the first git commit"
-    return get_git_repo(directory).heads["master"].log()[0].actor
+    return get_git_repo(directory).heads[0].log()[0].actor
 
 
 def find_author(directory=None):
