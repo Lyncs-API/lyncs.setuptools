@@ -30,6 +30,7 @@ jobs:
         pip install setuptools wheel twine
         pip install pytest pytest-cov
         pip install lyncs_setuptools
+        pip install -r requirements.txt
         
     - name: Install and upload if not up to date
       env:
