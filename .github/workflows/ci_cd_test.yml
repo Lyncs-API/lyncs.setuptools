@@ -13,9 +13,6 @@ jobs:
   build-n-publish:  
     runs-on: ubuntu-latest
 
-    strategy:
-      max-parallel: 1
-
     steps:
     - uses: actions/checkout@v2
 
@@ -74,7 +71,7 @@ jobs:
     - name: Installing
       run: |
         python -m pip install --upgrade pip
-        pip install lyncs_setuptools
+        pip install --extra-index-url https://test.pypi.org/simple/ lyncs_setuptools
         
     - name: Test with pytest
       run: |
