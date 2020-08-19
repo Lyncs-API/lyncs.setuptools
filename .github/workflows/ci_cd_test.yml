@@ -13,9 +13,6 @@ jobs:
   build-n-publish:  
     runs-on: ubuntu-latest
 
-    strategy:
-      max-parallel: 1
-
     steps:
     - uses: actions/checkout@v2
 
@@ -28,9 +25,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install setuptools wheel twine
-        pip install pytest pytest-cov
         pip install lyncs_setuptools
-        pip install -r requirements.txt
         
     - name: Install and upload if not up to date
       env:
@@ -49,9 +44,34 @@ jobs:
 
     - name: Run tests
       run: |
+        pip install --extra-index-url https://test.pypi.org/simple/ lyncs_setuptools[all]==$(lyncs_setuptools version)
         pytest -v
 
     - name: Run lyncs_setuptools
       run: |
         lyncs_setuptools
 
+  clean-run:
+    
+    needs: build-n-publish
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.5, 3.6, 3.7, 3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Installing
+      run: |
+        python -m pip install --upgrade pip
+        pip install --extra-index-url https://test.pypi.org/simple/ lyncs_setuptools[all]
+        
+    - name: Test with pytest
+      run: |
+        pytest -v
