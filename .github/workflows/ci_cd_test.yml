@@ -25,8 +25,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install setuptools wheel twine
-        pip install pytest pytest-cov
-        pip install gitpython
         pip install lyncs_setuptools
         
     - name: Install and upload if not up to date
@@ -46,6 +44,7 @@ jobs:
 
     - name: Run tests
       run: |
+        pip install --extra-index-url https://test.pypi.org/simple/ lyncs_setuptools[all]==$(lyncs_setuptools version)
         pytest -v
 
     - name: Run lyncs_setuptools
@@ -71,7 +70,7 @@ jobs:
     - name: Installing
       run: |
         python -m pip install --upgrade pip
-        pip install --extra-index-url https://test.pypi.org/simple/ lyncs_setuptools
+        pip install --extra-index-url https://test.pypi.org/simple/ lyncs_setuptools[all]
         
     - name: Test with pytest
       run: |
