@@ -1,10 +1,11 @@
 # Setup tools for Lyncs
 
-[![python](https://img.shields.io/pypi/pyversions/lyncs_setuptools.svg?logo=python)](https://pypi.org/project/lyncs_setuptools/)
-[![pypi](https://img.shields.io/pypi/v/lyncs_setuptools.svg?logo=python)](https://pypi.org/project/lyncs_setuptools/)
-[![license](https://img.shields.io/github/license/Lyncs-API/lyncs.setuptools?logo=github)](https://github.com/Lyncs-API/lyncs.setuptools/blob/master/LICENSE)
-[![build & test](https://img.shields.io/github/workflow/status/Lyncs-API/lyncs.setuptools/build%20&%20test?logo=github)](https://github.com/Lyncs-API/lyncs.setuptools/actions)
-[![codecov](https://img.shields.io/codecov/c/github/Lyncs-API/lyncs.setuptools?logo=codecov)](https://codecov.io/gh/Lyncs-API/lyncs.setuptools)
+[![python](https://img.shields.io/pypi/pyversions/lyncs_setuptools.svg?logo=python&logoColor=white)](https://pypi.org/project/lyncs_setuptools/)
+[![pypi](https://img.shields.io/pypi/v/lyncs_setuptools.svg?logo=python&logoColor=white)](https://pypi.org/project/lyncs_setuptools/)
+[![license](https://img.shields.io/github/license/Lyncs-API/lyncs.setuptools?logo=github&logoColor=white)](https://github.com/Lyncs-API/lyncs.setuptools/blob/master/LICENSE)
+[![build & test](https://img.shields.io/github/workflow/status/Lyncs-API/lyncs.setuptools/build%20&%20test?logo=github&logoColor=white)](https://github.com/Lyncs-API/lyncs.setuptools/actions)
+[![codecov](https://img.shields.io/codecov/c/github/Lyncs-API/lyncs.setuptools?logo=codecov&logoColor=white)](https://codecov.io/gh/Lyncs-API/lyncs.setuptools)
+[![black](https://img.shields.io/badge/code%20style-black-000000.svg?logo=codefactor&logoColor=white)](https://github.com/ambv/black)
 
 In this package we provide a wrap around the standard setutools to be used in Lyncs projects.
 
