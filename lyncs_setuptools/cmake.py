@@ -38,7 +38,7 @@ class CMakeBuild(build_ext):
             build_ext.run(self)
 
     def get_install_dir(self, ext):
-        return os.path.dirname(self.get_ext_fullpath(ext.name))
+        return os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
 
     def build_extension(self, ext):
         try:
