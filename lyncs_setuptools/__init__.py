@@ -10,6 +10,7 @@ from .description import *
 from .classifiers import *
 from .author import *
 from .cmake import *
+from .badges import *
 
 __version__ = "0.1.6"
 
