@@ -10,11 +10,6 @@ setup(
     },
     install_requires=["gitpython", "cmake"],
     data_files=[("test", ["test/CMakeLists.txt"])],
-    keywords=[
-        "Lyncs",
-        "setuptools",
-        "cmake",
-    ],
     extras_require={
         "test": ["pytest", "pytest-cov"],
         "pylint": ["pylint"],

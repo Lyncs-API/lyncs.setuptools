@@ -1,4 +1,4 @@
-# Setup tools for Lyncs
+# Setup tools for Lyncs and CMake support
 
 [![python](https://img.shields.io/pypi/pyversions/lyncs_setuptools.svg?logo=python&logoColor=white)](https://pypi.org/project/lyncs_setuptools/)
 [![pypi](https://img.shields.io/pypi/v/lyncs_setuptools.svg?logo=python&logoColor=white)](https://pypi.org/project/lyncs_setuptools/)
