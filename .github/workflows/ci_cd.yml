@@ -35,11 +35,7 @@ jobs:
         export CODECOV_TOKEN="${{ secrets.CODECOV_TOKEN }}"
         bash <(curl -s https://codecov.io/bash) -f ./coverage.xml -n lyncs_setuptools
 
-    - name: Run lyncs_setuptools
-      run: |
-        lyncs_setuptools
-
-    - name: Install and upload if not up to date
+    - name: Upload if not up to date
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.pypi_password }}

@@ -29,7 +29,36 @@ jobs:
       run: |
         pip install -e .[all]
 
-    - name: Run tests
+    - name: Applying black formatting
+      run: |
+        pip install black
+        black --diff .
+        black .
+
+    - name: Pushing changes if any
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Applying black formatting (from Github Action)
+        commit_user_name: sbacchio
+        commit_user_email: s.bacchio@gmail.com
+        commit_author: Simone Bacchio <s.bacchio@gmail.com>
+
+    - name: Pylint output
+      run: |
+        pip install lyncs_setuptools[pylint]
+        badge=$(lyncs_pylint_badge --fail-under 8 lyncs_setuptools)
+        badge_line=$(awk '/!\[pylint\]/ {print FNR}' README.md)
+        sed -i "${badge_line}s#.*#${badge}#" README.md
+
+    - name: Pushing changes if any
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Updating pylint score (from Github Action)
+        commit_user_name: sbacchio
+        commit_user_email: s.bacchio@gmail.com
+        commit_author: Simone Bacchio <s.bacchio@gmail.com>
+
+   - name: Run tests
       run: |
         pytest -v
 
