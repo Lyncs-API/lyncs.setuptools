@@ -58,7 +58,7 @@ jobs:
         commit_user_email: s.bacchio@gmail.com
         commit_author: Simone Bacchio <s.bacchio@gmail.com>
 
-   - name: Run tests
+    - name: Run tests
       run: |
         pytest -v
 
