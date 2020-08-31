@@ -1,3 +1,5 @@
+"Function for finding the version of the package"
+
 __all__ = [
     "find_version",
 ]
@@ -11,6 +13,8 @@ from .data_files import add_to_data_files
 
 
 def find_version(filename=None):
+    "Finds the version of the package"
+
     def get_version(filename):
         assert os.path.isfile(filename), "Given version does not exist"
         with codecs.open(filename, "r") as _fp:

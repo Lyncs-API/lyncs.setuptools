@@ -1,9 +1,16 @@
+"""
+Setup tools for Lyncs
+"""
+
+__version__ = "0.1.6"
+
 import sys
-import os
 import pathlib
 import codecs
+from functools import wraps
 from setuptools import find_packages
 from setuptools import setup as _SETUP
+
 from .version import *
 from .data_files import *
 from .description import *
@@ -12,10 +19,11 @@ from .author import *
 from .cmake import *
 from .badges import *
 
-__version__ = "0.1.6"
-
 
 def complete_kwargs(*args, **kwargs):
+    """
+    Completes kwargs with deduced setup options
+    """
     if args:
         assert len(args) == 1, "Only one arg allowed and it will be threated as name."
         assert "name" not in kwargs, "Repeated name parameter"
@@ -36,11 +44,11 @@ def complete_kwargs(*args, **kwargs):
 
     kwargs.setdefault("classifiers", classifiers)
 
-    if "long_description" not in kwargs:
-        dshort, dlong, dtype = find_description()
-        kwargs.setdefault("description", dshort)
-        kwargs.setdefault("long_description", dlong)
-        kwargs.setdefault("long_description_content_type", dtype)
+    dshort, dlong, dtype = find_description()
+    kwargs.setdefault("description", dshort)
+    kwargs.setdefault("long_description", dlong)
+    kwargs.setdefault("long_description_content_type", dtype)
+    kwargs.setdefault("keywords", get_keywords(dshort))
 
     if "ext_modules" in kwargs:
         kwargs.setdefault("cmdclass", dict())
@@ -69,6 +77,7 @@ def complete_kwargs(*args, **kwargs):
     return kwargs
 
 
+@wraps(_SETUP)
 def setup(*args, **kwargs):
     return _SETUP(**complete_kwargs(*args, **kwargs))
 
