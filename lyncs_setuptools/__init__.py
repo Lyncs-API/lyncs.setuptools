@@ -2,7 +2,7 @@
 Setup tools for Lyncs
 """
 
-__version__ = "0.1.6"
+__version__ = "0.1.7"
 
 import sys
 import pathlib
