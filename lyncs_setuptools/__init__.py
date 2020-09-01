@@ -35,13 +35,14 @@ def complete_kwargs(*args, **kwargs):
     kwargs.setdefault("download_url", find_download_url())
     kwargs.setdefault("version", find_version())
 
-    packages = find_packages()
-    test_dir = kwargs.pop("test_dir", "tests")
-    if test_dir in packages:
-        packages.remove(test_dir)
-    kwargs.setdefault("packages", packages)
-    kwargs.setdefault("name", packages[0])
+    kwargs.setdefault("packages", find_packages())
+    packages = kwargs["packages"]
+    if len(packages) > 1:
+        test_dirs = [pkg for pkg in packages if pkg.startswith("test")]
+        packages = [pkg for pkg in packages if pkg not in test_dirs]
+        kwargs["packages"] = packages
 
+    kwargs.setdefault("name", packages[0])
     kwargs.setdefault("classifiers", classifiers)
 
     dshort, dlong, dtype = find_description()
@@ -66,13 +67,13 @@ def complete_kwargs(*args, **kwargs):
         kwargs["extras_require"]["all"] = list(_all)
 
     kwargs.setdefault("data_files", [])
-    try:
-        files = (str(path) for path in pathlib.Path(test_dir).glob("*.py"))
-        add_to_data_files(*files)
-    except BaseException:
-        pass
+    add_to_data_files(*kwargs["data_files"])
 
-    kwargs["data_files"] += get_data_files()
+    for test_dir in test_dirs:
+        files = list(str(path) for path in pathlib.Path(test_dir).glob("**/*.py"))
+        add_to_data_files(*files)
+
+    kwargs["data_files"] = get_data_files()
 
     return kwargs
 

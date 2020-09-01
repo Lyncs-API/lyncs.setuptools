@@ -52,5 +52,6 @@ def find_version(filename=None):
         options
     )
 
-    add_to_data_files(filename)
+    if not filename.endswith(".py"):
+        add_to_data_files(filename)
     return version
