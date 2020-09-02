@@ -35,21 +35,19 @@ jobs:
         export CODECOV_TOKEN="${{ secrets.CODECOV_TOKEN }}"
         bash <(curl -s https://codecov.io/bash) -f ./coverage.xml -n lyncs_setuptools
 
-    - name: Run lyncs_setuptools
-      run: |
-        lyncs_setuptools
-
-    - name: Install and upload if not up to date
+    - name: Upload if not up to date
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.pypi_password }}
       run: |
-        pip install lyncs_setuptools==$(lyncs_setuptools version) || (
+        version=$(lyncs_setuptools version)
+        pip uninstall -y lyncs_setuptools
+        pip install lyncs_setuptools==${version} || (
           pip install twine
           python setup.py sdist
           twine upload dist/*
           count=0
-          while ! pip install lyncs_setuptools==$(lyncs_setuptools version) && [ $count -lt 20 ]; do
+          while ! pip install lyncs_setuptools==${version} && [ $count -lt 20 ]; do
             sleep 1
             count=$((count+1))
           done

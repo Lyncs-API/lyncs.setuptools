@@ -1,14 +1,23 @@
+"""
+Utils for finding description on the package
+"""
+
+__all__ = [
+    "find_description",
+    "get_keywords",
+]
+
+
 import codecs
 import os
 from itertools import product
 from .data_files import add_to_data_files
 
-__all__ = [
-    "find_description",
-]
-
 
 def find_description(readme=None):
+    """
+    Gets package description from the README
+    """
     base = ["README", "readme", "description"]
     ext = ["", ".txt", ".md", ".rst"]
     options = ["".join(parts) for parts in product(base, ext)]
@@ -47,3 +56,20 @@ def find_description(readme=None):
             dshort = dshort[1:]
 
     return dshort.strip(), dlong, dtype
+
+
+def get_keywords(string):
+    "Select keywords from a string"
+    if string is None:
+        return None
+
+    keywords = []
+    for word in string.split():
+        if sum(1 for c in word if c.isupper()) > 1:
+            keywords.append(word)
+            continue
+        if len(word) < 5:
+            # skipping
+            continue
+        keywords.append(word)
+    return set(keywords)

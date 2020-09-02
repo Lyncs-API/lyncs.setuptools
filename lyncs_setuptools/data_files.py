@@ -26,7 +26,10 @@ def _add_to_data_files(directory, filename):
 
 def add_to_data_files(*files, directory=None):
     for filename in files:
-        if directory:
+        if isinstance(filename, tuple):
+            assert len(filename) == 2
+            add_to_data_files(*filename[1], directory=filename[0])
+        elif directory:
             _add_to_data_files(directory, filename)
         else:
             assert is_subdir(
