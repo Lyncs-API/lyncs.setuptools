@@ -9,11 +9,16 @@ __all__ = [
 from collections import OrderedDict
 from contextlib import redirect_stdout
 import sys
+from .setup import get_kwargs
 
 
 def print_pylint_badge():
     "Runs the pylint executable and prints the badge with the score"
     from pylint.lint import Run
+
+    if "." in sys.argv:
+        sys.argv.remove(".")
+        sys.argv += get_kwargs()["packages"]
 
     with redirect_stdout(sys.stderr):
         results = Run(sys.argv[1:], do_exit=False)
@@ -30,6 +35,7 @@ def print_pylint_badge():
         }
     )
 
+    color = "brightgreen"
     for val, color in colors.items():
         if score >= val:
             break
