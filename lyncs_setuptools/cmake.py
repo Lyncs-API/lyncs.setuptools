@@ -65,13 +65,10 @@ class CMakeBuild(build_ext):
             os.makedirs(self.build_temp)
 
         out = subprocess.check_output(
-            ["cmake", ext.source_dir] + cmake_args,
-            cwd=self.build_temp,
-            env=env,
+            ["cmake", ext.source_dir] + cmake_args, cwd=self.build_temp, env=env
         )
         out += subprocess.check_output(
-            ["cmake", "--build", "."] + build_args,
-            cwd=self.build_temp,
+            ["cmake", "--build", "."] + build_args, cwd=self.build_temp
         )
         print(out)
 
