@@ -12,7 +12,7 @@ import sys
 from .setup import get_kwargs
 
 
-def print_pylint_badge():
+def print_pylint_badge(do_exit=True):
     "Runs the pylint executable and prints the badge with the score"
     from pylint.lint import Run
 
@@ -44,3 +44,11 @@ def print_pylint_badge():
         "[![pylint](https://img.shields.io/badge/pylint%%20score-%.1f%%2F10-%s?logo=python&logoColor=white)](http://pylint.pycqa.org/)"
         % (score, color)
     )
+
+    if not do_exit:
+        return
+    if results.linter.config.exit_zero:
+        sys.exit(0)
+    if score > results.linter.config.fail_under:
+        sys.exit(0)
+    sys.exit(results.linter.msg_status)
