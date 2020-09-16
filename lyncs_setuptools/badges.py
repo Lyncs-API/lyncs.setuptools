@@ -10,16 +10,24 @@ from collections import OrderedDict
 from contextlib import redirect_stdout
 import sys
 from .setup import get_kwargs
+from . import __path__
 
-
-def print_pylint_badge(do_exit=True):
+def print_pylint_badge(do_exit=True, spelling=True):
     "Runs the pylint executable and prints the badge with the score"
-    from pylint.lint import Run
+
+    try:
+        from pylint.lint import Run
+        import enchant
+    except ModuleNotFoundError:
+        raise ModuleNotFoundError("Please install lyncs_setuptools[pylint]")
 
     if "." in sys.argv:
         sys.argv.remove(".")
         sys.argv += get_kwargs()["packages"]
 
+    if spelling and "spelling" not in sys.argv and enchant.dict_exists("en"):
+        sys.argv += ["--enable", "spelling", "--spelling-dict", "en", "--spelling-private-dict-file", __path__[0]+"/words.txt"]
+    print(sys.argv)
     with redirect_stdout(sys.stderr):
         results = Run(sys.argv[1:], do_exit=False)
 
