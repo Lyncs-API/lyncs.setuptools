@@ -27,7 +27,7 @@ def print_pylint_badge(do_exit=True, spelling=True):
 
     if spelling and "spelling" not in sys.argv and enchant.dict_exists("en"):
         sys.argv += ["--enable", "spelling", "--spelling-dict", "en", "--spelling-private-dict-file", __path__[0]+"/words.txt"]
-    print(sys.argv)
+        
     with redirect_stdout(sys.stderr):
         results = Run(sys.argv[1:], do_exit=False)
 
