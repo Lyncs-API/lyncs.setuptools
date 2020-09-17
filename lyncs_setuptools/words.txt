@@ -25,6 +25,7 @@ lyncs
 metaclass
 mpi
 mpirun
+numpy
 params
 procs
 py
