@@ -32,7 +32,6 @@ jobs:
         pip install black
         black --diff .
         black .
-        sort lyncs_setuptools/words.txt -o lyncs_setuptools/words.txt
 
     - name: Pushing changes if any
       uses: stefanzweifel/git-auto-commit-action@v4
