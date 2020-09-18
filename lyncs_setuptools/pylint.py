@@ -32,8 +32,8 @@ def print_pylint_badge(do_exit=True, spelling=True):
             "spelling",
             "--spelling-dict",
             "en",
-            "--spelling-private-dict-file",
-            __path__[0] + "/words.txt",
+            "--spelling-ignore-words",
+            ",".join(ignore_words),
         ]
 
     with redirect_stdout(sys.stderr):
@@ -68,3 +68,47 @@ def print_pylint_badge(do_exit=True, spelling=True):
     if score > results.linter.config.fail_under:
         sys.exit(0)
     sys.exit(results.linter.msg_status)
+
+
+ignore_words = [
+    "abc",
+    "anymore",
+    "args",
+    "argv",
+    "bool",
+    "cartesian",
+    "cls",
+    "config",
+    "coord",
+    "coords",
+    "cppyy",
+    "cwd",
+    "dask",
+    "dict",
+    "dtype",
+    "etc",
+    "func",
+    "i",
+    "idxs",
+    "int",
+    "iterable",
+    "itertools",
+    "kwargs",
+    "lyncs",
+    "metaclass",
+    "mpi",
+    "mpirun",
+    "numpy",
+    "params",
+    "procs",
+    "py",
+    "setup",
+    "stdout",
+    "str",
+    "sys",
+    "tuple",
+    "url",
+    "utils",
+    "vals",
+    "varnames",
+]

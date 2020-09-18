@@ -10,5 +10,5 @@ from .description import *
 from .classifiers import *
 from .author import *
 from .cmake import *
-from .badges import *
+from .pylint import *
 from .setup import *
