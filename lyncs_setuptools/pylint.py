@@ -6,21 +6,23 @@ __all__ = [
     "print_pylint_badge",
 ]
 
+import pkgutil
 from collections import OrderedDict
-from contextlib import redirect_stdout
 import sys
+
+try:
+    from pylint.lint import Run
+    import enchant
+    from lyncs_utils import redirect_stdout
+except ModuleNotFoundError:
+    raise ModuleNotFoundError("Please install lyncs_setuptools[pylint]")
+
 from .setup import get_kwargs
 from . import __path__
 
 
 def print_pylint_badge(do_exit=True, spelling=True):
     "Runs the pylint executable and prints the badge with the score"
-
-    try:
-        from pylint.lint import Run
-        import enchant
-    except ModuleNotFoundError:
-        raise ModuleNotFoundError("Please install lyncs_setuptools[pylint]")
 
     if "." in sys.argv:
         sys.argv.remove(".")
@@ -70,45 +72,42 @@ def print_pylint_badge(do_exit=True, spelling=True):
     sys.exit(results.linter.msg_status)
 
 
-ignore_words = [
-    "abc",
-    "anymore",
-    "args",
-    "argv",
-    "bool",
-    "cartesian",
-    "cls",
-    "config",
-    "coord",
-    "coords",
-    "cppyy",
-    "cwd",
-    "dask",
-    "dict",
-    "dtype",
-    "etc",
-    "func",
-    "i",
-    "idxs",
-    "int",
-    "iterable",
-    "itertools",
-    "kwargs",
-    "lyncs",
-    "metaclass",
-    "mpi",
-    "mpirun",
-    "numpy",
-    "params",
-    "procs",
-    "py",
-    "setup",
-    "stdout",
-    "str",
-    "sys",
-    "tuple",
-    "url",
-    "utils",
-    "vals",
-    "varnames",
-]
+ignore_words = sorted(
+    [
+        "anymore",
+        "args",
+        "argv",
+        "bool",
+        "cartesian",
+        "cls",
+        "config",
+        "coord",
+        "coords",
+        "cwd",
+        "dict",
+        "dtype",
+        "etc",
+        "func",
+        "i",
+        "idxs",
+        "int",
+        "iterable",
+        "itertools",
+        "kwargs",
+        "lyncs",
+        "metaclass",
+        "mpi",
+        "mpirun",
+        "params",
+        "procs",
+        "stdout",
+        "str",
+        "sys",
+        "tuple",
+        "url",
+        "utils",
+        "vals",
+        "varnames",
+    ]
+    + list(mod.name for mod in pkgutil.iter_modules(None))
+)
