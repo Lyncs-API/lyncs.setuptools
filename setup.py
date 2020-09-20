@@ -5,19 +5,18 @@ setup(
     entry_points={
         "console_scripts": [
             "lyncs_setuptools = lyncs_setuptools:print_keys",
-            "lyncs_pylint_badge = lyncs_setuptools:print_pylint_badge [pylint]",
+            "lyncs_pylint_badge = lyncs_setuptools.pylint:print_pylint_badge [pylint]",
         ]
     },
     install_requires=[
         "gitpython",
         "cmake",
-        "lyncs_utils",
     ],
     data_files=[
         ("test", ["test/CMakeLists.txt"]),
     ],
     extras_require={
         "test": ["pytest", "pytest-cov"],
-        "pylint": ["pylint", "pyenchant"],
+        "pylint": ["pylint", "pyenchant", "lyncs_utils"],
     },
 )

@@ -9,19 +9,20 @@ __all__ = [
 import pkgutil
 from collections import OrderedDict
 import sys
-from lyncs_utils import redirect_stdout
+
+try:
+    from pylint.lint import Run
+    import enchant
+    from lyncs_utils import redirect_stdout
+except ModuleNotFoundError:
+    raise ModuleNotFoundError("Please install lyncs_setuptools[pylint]")
+
 from .setup import get_kwargs
 from . import __path__
 
 
 def print_pylint_badge(do_exit=True, spelling=True):
     "Runs the pylint executable and prints the badge with the score"
-
-    try:
-        from pylint.lint import Run
-        import enchant
-    except ModuleNotFoundError:
-        raise ModuleNotFoundError("Please install lyncs_setuptools[pylint]")
 
     if "." in sys.argv:
         sys.argv.remove(".")

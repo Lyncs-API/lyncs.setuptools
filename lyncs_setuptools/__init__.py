@@ -10,5 +10,4 @@ from .description import *
 from .classifiers import *
 from .author import *
 from .cmake import *
-from .pylint import *
 from .setup import *
