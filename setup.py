@@ -8,7 +8,11 @@ setup(
             "lyncs_pylint_badge = lyncs_setuptools:print_pylint_badge [pylint]",
         ]
     },
-    install_requires=["gitpython", "cmake"],
+    install_requires=[
+        "gitpython",
+        "cmake",
+        "lyncs_utils",
+    ],
     data_files=[
         ("test", ["test/CMakeLists.txt"]),
     ],
