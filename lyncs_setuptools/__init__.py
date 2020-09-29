@@ -10,4 +10,4 @@ from .description import *
 from .classifiers import *
 from .author import *
 from .cmake import *
-from .setup import *
+from .setuptools import *
