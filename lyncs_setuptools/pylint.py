@@ -15,9 +15,9 @@ try:
     import enchant
     from lyncs_utils import redirect_stdout
 except ModuleNotFoundError as err:
-    raise ModuleNotFoundError from err
+    raise ModuleNotFoundError("Please install lyncs_setuptools[pylint].") from err
 
-from .setup import get_kwargs
+from .setuptools import get_kwargs
 from . import __path__
 
 
@@ -39,7 +39,7 @@ def print_pylint_badge(do_exit=True, spelling=True):
         ]
 
     with redirect_stdout(sys.stderr):
-        results = Run(sys.argv[1:], do_exit=False)
+        results = Run(sys.argv[1:], exit=False)
 
     score = results.linter.stats["global_note"]
     colors = OrderedDict(
