@@ -55,7 +55,7 @@ class CMakeBuild(build_ext):
         build_args = ["--config", cfg]
 
         cmake_args += ["-DCMAKE_BUILD_TYPE=" + cfg]
-        build_args += ["--", "-j"]
+        build_args += ["--", "-j", str(abs(os.cpu_count() - 1) or 1)]
 
         env = os.environ.copy()
         env["CXXFLAGS"] = '{} -DVERSION_INFO=\\"{}\\"'.format(
