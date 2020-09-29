@@ -14,10 +14,10 @@ try:
     from pylint.lint import Run
     import enchant
     from lyncs_utils import redirect_stdout
-except ModuleNotFoundError:
-    raise ModuleNotFoundError("Please install lyncs_setuptools[pylint]")
+except ModuleNotFoundError as err:
+    raise ModuleNotFoundError("Please install lyncs_setuptools[pylint].") from err
 
-from .setup import get_kwargs
+from .setuptools import get_kwargs
 from . import __path__
 
 
@@ -39,7 +39,7 @@ def print_pylint_badge(do_exit=True, spelling=True):
         ]
 
     with redirect_stdout(sys.stderr):
-        results = Run(sys.argv[1:], do_exit=False)
+        results = Run(sys.argv[1:], exit=False)
 
     score = results.linter.stats["global_note"]
     colors = OrderedDict(
@@ -75,16 +75,19 @@ def print_pylint_badge(do_exit=True, spelling=True):
 ignore_words = sorted(
     [
         "anymore",
+        "API",
         "args",
         "argv",
         "bool",
         "cartesian",
         "cls",
+        "color",
         "config",
         "coord",
         "coords",
         "cwd",
         "dict",
+        "dofs",
         "dtype",
         "etc",
         "func",
@@ -93,13 +96,19 @@ ignore_words = sorted(
         "int",
         "iterable",
         "itertools",
+        "j",
         "kwargs",
         "lyncs",
         "metaclass",
         "mpi",
         "mpirun",
+        "namespace",
+        "openmp",
+        "parallelize",
         "params",
         "procs",
+        "QCD",
+        "rhs",
         "stdout",
         "str",
         "sys",
