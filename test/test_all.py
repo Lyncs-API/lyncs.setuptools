@@ -57,7 +57,7 @@ except ModuleNotFoundError:
 
 @pytest.mark.skipif(skip_pylint, reason="lyncs_setuptools[pylint] not installed")
 def test_pylint():
-    sys.argv.append(".")
+    sys.argv = ["lyncs_pylint_badge", "."]
     out, err = capture_stdout_and_err(print_pylint_badge, do_exit=False)
     assert "[![pylint](https://img.shields.io/badge" in out
     assert "Your code has been rated" in err
