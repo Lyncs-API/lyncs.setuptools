@@ -1,17 +1,21 @@
-import os
-import io
-import subprocess
-from setuptools import Extension
-from setuptools.command.build_ext import build_ext
-
+"""
+Tools for running CMake in setup phase
+"""
 
 __all__ = [
     "CMakeExtension",
     "CMakeBuild",
 ]
 
+import os
+import subprocess
+from setuptools import Extension
+from setuptools.command.build_ext import build_ext
+
 
 class CMakeExtension(Extension):
+    "Setup extension for CMake"
+
     def __init__(self, name, source_dir=".", cmake_args=None, post_build=None):
         source_dir = source_dir or "."
 
@@ -29,7 +33,10 @@ class CMakeExtension(Extension):
 
 
 class CMakeBuild(build_ext):
+    "Build phase of the CMakeExtension"
+
     def run(self):
+        "build_ext function that manages the installation"
         for ext in self.extensions:
             if isinstance(ext, CMakeExtension):
                 self.build_extension(ext)
@@ -38,15 +45,18 @@ class CMakeBuild(build_ext):
             build_ext.run(self)
 
     def get_install_dir(self, ext):
+        "Returns the installation directory (the module base directory)"
         return os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
 
     def build_extension(self, ext):
+        "Runs the CMake scripts in the build phase"
+
         try:
             out = subprocess.check_output(["cmake", "--version"])
-        except OSError:
-            raise RuntimeError(
+        except OSError as err:
+            raise OSError(
                 "CMake must be installed to build the following extensions: " + ext.name
-            )
+            ) from err
 
         cmake_args = ["-DEXTERNAL_INSTALL_LOCATION=" + self.get_install_dir(ext)]
         cmake_args += ext.cmake_args
