@@ -84,23 +84,22 @@ def complete_kwargs(*args, **kwargs):
 
 @wraps(_SETUP)
 def setup(*args, **kwargs):
+    "setuptools.setup wrapper"
     return _SETUP(**complete_kwargs(*args, **kwargs))
 
 
 def get_kwargs():
     "Returns the complete set of kwargs passed to setup by calling setup.py"
 
-    try:
-        global _SETUP
-        _tmp = _SETUP
-        ret = dict()
-        _SETUP = ret.update
-        with codecs.open("setup.py", encoding="utf-8") as _fp:
-            exec(_fp.read())
-        _SETUP = _tmp
-        return ret
-    except BaseException:
-        return complete_kwargs()
+    # pylint: disable=global-statement,exec-used
+    global _SETUP
+    _tmp = _SETUP
+    ret = dict()
+    _SETUP = ret.update
+    with codecs.open("setup.py", encoding="utf-8") as _fp:
+        exec(_fp.read())
+    _SETUP = _tmp
+    return ret
 
 
 def print_keys(keys=None):
@@ -114,7 +113,12 @@ def print_keys(keys=None):
       Note: if None is given, then sys.argv is used
     """
     keys = sys.argv[1:] if keys is None else ([keys] if isinstance(keys, str) else keys)
-    kwargs = get_kwargs()
+
+    try:
+        kwargs = get_kwargs()
+    except FileNotFoundError:
+        print("No file 'setup.py' found in the current directory.")
+        sys.exit(1)
 
     if len(keys) == 1:
         assert keys[0] in kwargs, "Allowed options are '%s'" % ("', '".join(kwargs))
