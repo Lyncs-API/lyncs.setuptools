@@ -3,6 +3,7 @@ Utils for finding description on the package
 """
 
 __all__ = [
+    "find_readme",
     "find_description",
     "get_keywords",
 ]
@@ -14,22 +15,28 @@ from itertools import product
 from .data_files import add_to_data_files
 
 
+def find_readme():
+    """Search for a README file"""
+    base = ["README", "readme", "description"]
+    ext = ["", ".txt", ".md", ".rst"]
+    options = ["".join(parts) for parts in product(base, ext)]
+
+    for filename in options:
+        if os.path.isfile(filename):
+            return filename
+    return None
+
+
 def find_description(readme=None):
     """
     Gets package description from the README
     """
-    base = ["README", "readme", "description"]
-    ext = ["", ".txt", ".md", ".rst"]
-    options = ["".join(parts) for parts in product(base, ext)]
 
     if readme:
         if not os.path.isfile(readme):
             raise IOError("Given readme does not exist")
     else:
-        for filename in options:
-            if os.path.isfile(filename):
-                readme = filename
-                break
+        readme = find_readme()
 
     if not readme:
         return None, None, None
