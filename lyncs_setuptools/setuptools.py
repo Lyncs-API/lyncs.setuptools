@@ -41,20 +41,22 @@ def complete_kwargs(*args, **kwargs):
     kwargs.setdefault("url", find_download_url())
     kwargs.setdefault("project_urls", OrderedDict())
 
-    kwargs["project_urls"].setdefault("Source", find_download_url())
+    download_url = find_download_url()
+    if download_url:
+        kwargs["project_urls"].setdefault("Source", find_download_url())
 
     readme = find_readme()
-    if readme:
+    if readme and kwargs["project_urls"].get("Source", False):
         kwargs["project_urls"].setdefault(
             "Documentation", kwargs["project_urls"]["Source"] + "/" + readme
         )
 
-    if "github" in kwargs["project_urls"]["Source"]:
+    if "github" in kwargs["project_urls"].get("Source", ""):
         kwargs["project_urls"].setdefault(
             "Tracker", kwargs["project_urls"]["Source"] + "/issues"
         )
 
-    if "github" in kwargs["project_urls"]["Source"]:
+    if "github" in kwargs["project_urls"].get("Source", ""):
         kwargs["project_urls"].setdefault(
             "Download", kwargs["project_urls"]["Source"] + "/archive/master.zip"
         )
