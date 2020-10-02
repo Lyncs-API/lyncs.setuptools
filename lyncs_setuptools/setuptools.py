@@ -15,10 +15,11 @@ import codecs
 from functools import wraps
 from setuptools import find_packages
 from setuptools import setup as _SETUP
+from collections import OrderedDict
 
 from .version import find_version
 from .data_files import add_to_data_files, get_data_files
-from .description import find_description, get_keywords
+from .description import find_readme, find_description, get_keywords
 from .classifiers import get_classifiers
 from .author import find_author, find_email, find_download_url
 from .cmake import CMakeBuild
@@ -35,9 +36,30 @@ def complete_kwargs(*args, **kwargs):
 
     kwargs.setdefault("author", find_author())
     kwargs.setdefault("author_email", find_email())
-    kwargs.setdefault("url", "https://lyncs-api.github.io")
-    kwargs.setdefault("download_url", find_download_url())
     kwargs.setdefault("version", find_version())
+
+    kwargs.setdefault("url", find_download_url())
+    kwargs.setdefault("project_urls", OrderedDict())
+
+    download_url = find_download_url()
+    if download_url:
+        kwargs["project_urls"].setdefault("Source", find_download_url())
+
+    readme = find_readme()
+    if readme and kwargs["project_urls"].get("Source", False):
+        kwargs["project_urls"].setdefault(
+            "Documentation", kwargs["project_urls"]["Source"] + "/" + readme
+        )
+
+    if "github" in kwargs["project_urls"].get("Source", ""):
+        kwargs["project_urls"].setdefault(
+            "Tracker", kwargs["project_urls"]["Source"] + "/issues"
+        )
+
+    if "github" in kwargs["project_urls"].get("Source", ""):
+        kwargs["project_urls"].setdefault(
+            "Download", kwargs["project_urls"]["Source"] + "/archive/master.zip"
+        )
 
     kwargs.setdefault("packages", find_packages())
     packages = kwargs["packages"]

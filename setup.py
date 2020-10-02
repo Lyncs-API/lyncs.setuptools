@@ -4,6 +4,7 @@ setup(
     "lyncs_setuptools",
     entry_points={
         "console_scripts": [
+            "lyncs_packages = lyncs_setuptools.packages:print_packages",
             "lyncs_setuptools = lyncs_setuptools:print_keys",
             "lyncs_pylint_badge = lyncs_setuptools.pylint:print_pylint_badge [pylint]",
         ]
@@ -11,6 +12,7 @@ setup(
     install_requires=[
         "gitpython",
         "cmake",
+        "pip",
     ],
     data_files=[
         ("test", ["test/CMakeLists.txt"]),
