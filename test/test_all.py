@@ -11,6 +11,7 @@ from lyncs_setuptools import (
 )
 from distutils.dist import Distribution
 from lyncs_setuptools import __version__ as version
+from lyncs_setuptools.packages import *
 
 
 def capture_stdout_and_err(fnc, *args, **kwargs):
@@ -44,6 +45,21 @@ def test_cmake():
 
     out, err = capture_stdout_and_err(build.run)
     assert "test1234" in out
+    assert not err
+
+
+def test_packages():
+    assert "lyncs_setuptools" in lyncs_packages()
+    assert f"lyncs-setuptools=={version}" in lyncs_packages_verbose()
+
+    sys.argv = ["lyncs_packages"]
+    out, err = capture_stdout_and_err(print_packages)
+    assert "lyncs_setuptools" in out
+    assert not err
+
+    sys.argv = ["lyncs_packages", "-v"]
+    out, err = capture_stdout_and_err(print_packages)
+    assert f"lyncs-setuptools=={version}" in out
     assert not err
 
 
