@@ -24,7 +24,7 @@ Lyncs setuptools automizes the deduction of many setup.py options.
 
 Its use in a `setup.py` file is the following
 
-```
+```python
 from lyncs_setuptools import setup
 
 setup(package_name, **kwargs)
@@ -32,15 +32,24 @@ setup(package_name, **kwargs)
 
 where package_name is the name of the package and kwargs are a list of arguments additional or replacement of the one automatically deduced.
 
-For seeing the list of the automatically deduced options, run `lyncs_setuptools` from command line in the directory containing the setup.py.
+**NOTE:** For seeing the list of the automatically deduced options, run `lyncs_setuptools` from command line in the directory containing the file `setup.py`.
 
-## CMakeExension
+**NOTE:** for correctly installing your package via `pip`, you need to add a file named `pyproject.toml` with the following content.
+
+```
+[build-system]
+requires = ["lyncs_setuptools", ]
+```
+
+Add `"cmake"` to the requirements list if you use the following CMake extension.
+
+### CMakeExension
 
 Based on https://www.benjack.io/2017/06/12/python-cpp-tests.html we provide a CMakeExtension to support CMake files.
 
 A CMakeExtension can be added as follow
 
-```
+```python
 from lyncs_setuptools import setup, CMakeExtension
 
 ext = CMakeExtension(install_dir, source_dir='.', cmake_args=[])
