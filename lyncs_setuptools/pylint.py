@@ -118,5 +118,11 @@ ignore_words = sorted(
         "vals",
         "varnames",
     ]
-    + list(mod.name for mod in pkgutil.iter_modules(None))
+    + list(
+        set(
+            part
+            for mod in pkgutil.iter_modules(None)
+            for part in mod.name.replace("-", "_").split("_")
+        ).difference([""])
+    )
 )
