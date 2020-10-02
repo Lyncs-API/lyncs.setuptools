@@ -7,6 +7,13 @@ assignees: ''
 
 ---
 
+Before reporting a bug, please make sure you are using the latest version
+of all the lyncs packages. Use the following command to update them:
+
+```
+pip install --upgrade $(lyncs_packages)
+```
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
