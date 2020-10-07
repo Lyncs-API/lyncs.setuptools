@@ -20,9 +20,8 @@ except ModuleNotFoundError as err:
 from .setuptools import get_kwargs
 from . import __path__
 
-
-def print_pylint_badge(do_exit=True, spelling=True):
-    "Runs the pylint executable and prints the badge with the score"
+def run_pylint(do_exit=True, spelling=True):
+    "Runs the pylint executable with some additional options"
 
     if "." in sys.argv:
         sys.argv.remove(".")
@@ -38,8 +37,14 @@ def print_pylint_badge(do_exit=True, spelling=True):
             ",".join(ignore_words),
         ]
 
+    return Run(sys.argv[1:], exit=do_exit)
+
+
+def print_pylint_badge(do_exit=True, **kwargs):
+    "Runs the pylint executable and prints the badge with the score"
+
     with redirect_stdout(sys.stderr):
-        results = Run(sys.argv[1:], exit=False)
+        results = run_pylint(do_exit=False, **kwargs)
 
     score = results.linter.stats["global_note"]
     colors = OrderedDict(
@@ -76,6 +81,7 @@ ignore_words = sorted(
     [
         "anymore",
         "API",
+        "arg",
         "args",
         "argv",
         "bool",

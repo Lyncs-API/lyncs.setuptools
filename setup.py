@@ -6,6 +6,7 @@ setup(
         "console_scripts": [
             "lyncs_packages = lyncs_setuptools.packages:print_packages",
             "lyncs_setuptools = lyncs_setuptools:print_keys",
+            "lyncs_pylint = lyncs_setuptools.pylint:run_pylint [pylint]",
             "lyncs_pylint_badge = lyncs_setuptools.pylint:print_pylint_badge [pylint]",
         ]
     },
