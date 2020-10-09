@@ -20,6 +20,7 @@ except ModuleNotFoundError as err:
 from .setuptools import get_kwargs
 from . import __path__
 
+
 def run_pylint(do_exit=True, spelling=True):
     "Runs the pylint executable with some additional options"
 
@@ -102,6 +103,7 @@ ignore_words = sorted(
         "int",
         "iterable",
         "itertools",
+        "Iwasaki",
         "j",
         "kwargs",
         "lyncs",
@@ -112,11 +114,13 @@ ignore_words = sorted(
         "openmp",
         "parallelize",
         "params",
+        "plaquette",
         "procs",
         "QCD",
         "rhs",
         "stdout",
         "str",
+        "Symanzik",
         "sys",
         "tuple",
         "url",
