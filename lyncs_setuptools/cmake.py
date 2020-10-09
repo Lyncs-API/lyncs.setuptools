@@ -5,10 +5,12 @@ Tools for running CMake in setup phase
 __all__ = [
     "CMakeExtension",
     "CMakeBuild",
+    "find_package",
 ]
 
 import os
 import subprocess
+from tempfile import TemporaryDirectory
 from setuptools import Extension
 from setuptools.command.build_ext import build_ext
 
@@ -80,7 +82,76 @@ class CMakeBuild(build_ext):
         out += subprocess.check_output(
             ["cmake", "--build", "."] + build_args, cwd=self.build_temp
         )
-        print(out)
+        print(out.decode())
 
         if ext.post_build:
             ext.post_build(self, ext)
+
+
+CMAKE_FIND = """
+cmake_minimum_required(VERSION 3.10)
+
+project(LYNCS)
+
+get_cmake_property(_before VARIABLES)
+
+find_package(%s)
+
+get_cmake_property(_after VARIABLES)
+foreach (_name ${_after})
+    if((NOT _name IN_LIST _before) AND (NOT _name STREQUAL "_before"))
+      message(STATUS "VAR ${_name} = ${${_name}}")
+    endif()
+endforeach()
+"""
+
+
+def parse_value(val):
+    "Parse a CMake value"
+    if not isinstance(val, str):
+        return val
+    try:
+        return int(val)
+    except ValueError:
+        pass
+    if ";" in val:
+        return val.split(";")
+    if val.lower() == "true":
+        return True
+    if val.lower() == "false":
+        return False
+    return val
+
+
+def find_package(name, clean=True):
+    """
+    Returns the output of find_package by CMake.
+    If clean, returns post-processed values.
+    Otherwise all the variables and value from CMake.
+    """
+
+    with TemporaryDirectory() as temp_dir:
+        with open(temp_dir + "/CMakeLists.txt", "w") as cmake_file:
+            cmake_file.write(CMAKE_FIND % name)
+
+        out = subprocess.check_output(
+            ["cmake", "."], cwd=temp_dir, stderr=subprocess.DEVNULL
+        )
+
+    lines = tuple(
+        line.split()[2:]
+        for line in out.decode().split("\n")
+        if line.startswith("-- VAR")
+    )
+    assert all((len(line) >= 2 and "=" in line for line in lines))
+
+    values = {line[0]: " ".join(line[2:]) if len(line) >= 3 else None for line in lines}
+
+    if not clean:
+        return values
+
+    return {
+        key[len(name) + 1 :].lower(): parse_value(val)
+        for key, val in values.items()
+        if key.startswith(name + "_")
+    }
