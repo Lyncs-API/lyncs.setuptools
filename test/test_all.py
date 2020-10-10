@@ -10,6 +10,7 @@ from lyncs_setuptools import (
     CMakeBuild,
     find_package,
 )
+from lyncs_setuptools.cmake import print_find_package
 from distutils.dist import Distribution
 from lyncs_setuptools import __version__ as version
 from lyncs_setuptools.packages import *
@@ -52,6 +53,10 @@ def test_cmake():
 def test_cmake_find_package():
     assert "MPI_FOUND" in find_package("MPI", clean=False)
     assert "found" in find_package("MPI")
+    sys.argv = ["lyncs_find_package", "foo"]
+    out, err = capture_stdout_and_err(print_find_package)
+    assert "found: 0" in out.split("\n")
+    assert not err
 
 
 def test_packages():

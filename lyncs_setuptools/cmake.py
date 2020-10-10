@@ -8,6 +8,7 @@ __all__ = [
     "find_package",
 ]
 
+import argparse
 import os
 import subprocess
 from tempfile import TemporaryDirectory
@@ -155,3 +156,23 @@ def find_package(name, clean=True):
         for key, val in values.items()
         if key.startswith(name + "_")
     }
+
+
+def print_find_package():
+    "Returns the values of find_package"
+    parser = argparse.ArgumentParser(
+        "Returns the variables defined by CMake find_package"
+    )
+    parser.add_argument("package", nargs=1, help="The package to find, e.g. MPI")
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="count",
+        default=0,
+        help="prints all the values without cleaning them",
+    )
+    args = parser.parse_args()
+    out = find_package(args.package[0], clean=args.verbose == 0)
+
+    for key, val in out.items():
+        print(key + ":", val)

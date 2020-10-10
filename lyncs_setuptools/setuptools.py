@@ -13,9 +13,9 @@ import sys
 import pathlib
 import codecs
 from functools import wraps
+from collections import OrderedDict
 from setuptools import find_packages
 from setuptools import setup as _SETUP
-from collections import OrderedDict
 
 from .version import find_version
 from .data_files import add_to_data_files, get_data_files
