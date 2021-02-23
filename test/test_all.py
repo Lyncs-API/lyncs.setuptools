@@ -10,6 +10,7 @@ from lyncs_setuptools import (
     CMakeBuild,
     find_package,
 )
+from lyncs_setuptools.cmake import get_version, get_variables
 from lyncs_setuptools.cmake import print_find_package
 from distutils.dist import Distribution
 from lyncs_setuptools import __version__ as version
@@ -57,6 +58,10 @@ def test_cmake_find_package():
     out, err = capture_stdout_and_err(print_find_package)
     assert "found: 0" in out.split("\n")
     assert not err
+
+
+def test_cmake_version():
+    assert get_version() == get_variables()["CMAKE_VERSION"]
 
 
 def test_packages():

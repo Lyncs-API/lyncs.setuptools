@@ -63,6 +63,7 @@ def complete_kwargs(*args, **kwargs):
 
     kwargs.setdefault("packages", find_packages())
     packages = kwargs["packages"]
+    test_dirs = []
     if len(packages) > 1:
         test_dirs = [pkg for pkg in packages if pkg.startswith("test")]
         packages = [pkg for pkg in packages if pkg not in test_dirs]

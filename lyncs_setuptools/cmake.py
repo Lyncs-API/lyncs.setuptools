@@ -89,8 +89,19 @@ class CMakeBuild(build_ext):
             ext.post_build(self, ext)
 
 
+def get_version():
+    """Returns CMake version"""
+    out = subprocess.check_output(
+        ["cmake", "--version"], stderr=subprocess.DEVNULL
+    ).decode()
+    for part in out.split():
+        if part[0].isdigit():
+            return part
+    raise RuntimeError("Could not deduce version")
+
+
 CMAKE_FIND = """
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION ${CMAKE_VERSION})
 
 project(LYNCS)
 
@@ -176,3 +187,45 @@ def print_find_package():
 
     for key, val in out.items():
         print(key + ":", val)
+
+
+CMAKE_VARS = """
+cmake_minimum_required(VERSION ${CMAKE_VERSION})
+
+project(LYNCS)
+
+get_cmake_property(_vars VARIABLES)
+
+foreach (_name ${_vars})
+    if(NOT _name STREQUAL "_vars")
+      message(STATUS "VAR ${_name} = ${${_name}}")
+    endif()
+endforeach()
+"""
+
+
+def get_variables():
+    """
+    Returns the output of find_package by CMake.
+    If clean, returns post-processed values.
+    Otherwise all the variables and values from CMake.
+    """
+
+    with TemporaryDirectory() as temp_dir:
+        with open(temp_dir + "/CMakeLists.txt", "w") as cmake_file:
+            cmake_file.write(CMAKE_VARS)
+
+        out = subprocess.check_output(
+            ["cmake", "."], cwd=temp_dir, stderr=subprocess.DEVNULL
+        )
+
+    lines = tuple(
+        line.split()[2:]
+        for line in out.decode().split("\n")
+        if line.startswith("-- VAR")
+    )
+    assert all((len(line) >= 2 and "=" in line for line in lines))
+
+    values = {line[0]: " ".join(line[2:]) if len(line) >= 3 else None for line in lines}
+
+    return {key: parse_value(val) for key, val in values.items()}

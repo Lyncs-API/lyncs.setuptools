@@ -26,7 +26,11 @@ def run_pylint(do_exit=True, spelling=True):
 
     if "." in sys.argv:
         sys.argv.remove(".")
-        sys.argv += get_kwargs()["packages"]
+        pkgs = []
+        for pkg in get_kwargs()["packages"]:
+            if pkg.split(".")[0] not in pkgs:
+                pkgs.append(pkg)
+        sys.argv += pkgs
 
     if spelling and "spelling" not in sys.argv and enchant.dict_exists("en"):
         sys.argv += [
@@ -97,6 +101,7 @@ ignore_words = sorted(
         "dofs",
         "dtype",
         "etc",
+        "filename",
         "func",
         "i",
         "idxs",
@@ -118,10 +123,13 @@ ignore_words = sorted(
         "procs",
         "QCD",
         "rhs",
+        "Schwinger",
         "stdout",
         "str",
         "Symanzik",
         "sys",
+        "TBA",
+        "TBD",
         "tuple",
         "url",
         "utils",
