@@ -14,6 +14,7 @@ setup(
     install_requires=[
         "gitpython",
         "pip",
+        "packaging",
     ],
     data_files=[
         ("test", ["test/CMakeLists.txt"]),

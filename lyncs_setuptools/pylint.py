@@ -124,6 +124,7 @@ ignore_words = sorted(
         "QCD",
         "rhs",
         "Schwinger",
+        "spinor",
         "stdout",
         "str",
         "Symanzik",
