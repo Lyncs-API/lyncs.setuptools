@@ -2,7 +2,7 @@
 Setup tools for Lyncs
 """
 
-__version__ = "0.2.8"
+__version__ = "0.2.9"
 
 from .version import *
 from .data_files import *
