@@ -15,6 +15,11 @@ from tempfile import TemporaryDirectory
 from setuptools import Extension
 from setuptools.command.build_ext import build_ext
 
+try:
+    import cmake
+except ModuleNotFoundError as err:
+    raise ModuleNotFoundError("Please install lyncs_setuptools[cmake].") from err
+
 
 class CMakeExtension(Extension):
     "Setup extension for CMake"
@@ -89,8 +94,10 @@ class CMakeBuild(build_ext):
             ext.post_build(self, ext)
 
 
-def get_version():
+def get_version(verbose=False):
     """Returns CMake version"""
+    if not verbose:
+        return ".".join(cmake.__version__.split(".")[:3])
     out = subprocess.check_output(
         ["cmake", "--version"], stderr=subprocess.DEVNULL
     ).decode()
