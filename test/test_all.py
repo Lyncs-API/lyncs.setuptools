@@ -14,6 +14,7 @@ from distutils.dist import Distribution
 from lyncs_setuptools import __version__ as version
 from lyncs_setuptools.packages import *
 from lyncs_setuptools.classifiers import get_dev_status
+from lyncs_setuptools.raiseif import raiseif
 
 if WITH_CMAKE:
     from lyncs_setuptools import CMakeExtension, CMakeBuild
@@ -106,6 +107,15 @@ def test_dev_status():
     assert "Stable" in get_dev_status("2.9.9")
     assert "Mature" in get_dev_status("3.0.0")
     assert "Mature" in get_dev_status("9.9.9")
+
+
+def test_raiseif():
+    fnc = raiseif(False, RuntimeError())(lambda: "foo")
+    assert fnc() == "foo"
+
+    fnc = raiseif(True, RuntimeError())(lambda: "foo")
+    with pytest.raises(RuntimeError):
+        fnc()
 
 
 @skip_pylint
