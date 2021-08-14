@@ -4,23 +4,31 @@ Functions for generating code badges
 
 __all__ = [
     "print_pylint_badge",
+    "WITH_PYLINT",
 ]
 
 import pkgutil
 from collections import OrderedDict
 import sys
+from .raiseif import raiseif
+from .setuptools import get_kwargs
+from . import __path__
 
 try:
     from pylint.lint import Run
     import enchant
     from lyncs_utils import redirect_stdout
-except ModuleNotFoundError as err:
-    raise ModuleNotFoundError("Please install lyncs_setuptools[pylint].") from err
 
-from .setuptools import get_kwargs
-from . import __path__
+    WITH_PYLINT = True
+except ModuleNotFoundError:
+    WITH_PYLINT = False
+
+mark = raiseif(
+    not WITH_PYLINT, ImportError("Please install `lyncs_setuptools[pylint]`")
+)
 
 
+@mark
 def run_pylint(do_exit=True, spelling=True):
     "Runs the pylint executable with some additional options"
 
@@ -45,6 +53,7 @@ def run_pylint(do_exit=True, spelling=True):
     return Run(sys.argv[1:], exit=do_exit)
 
 
+@mark
 def print_pylint_badge(do_exit=True, **kwargs):
     "Runs the pylint executable and prints the badge with the score"
 
