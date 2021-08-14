@@ -3,23 +3,60 @@ These are the Lyncs' default classifiers.
 Ref. to https://pypi.org/classifiers/
 """
 
+from packaging.version import parse as parse_version
 
-def get_classifiers(current=None):
+
+class Classifiers(set):
+    def __contains__(self, value):
+        if not isinstance(value, str):
+            return False
+        for key in self:
+            if key.startswith(value):
+                return True
+        return False
+
+    def setdefault(self, value, depth=1):
+        if "::".join(value.split("::")[:depth]) not in self:
+            self.add(value)
+
+
+def get_dev_status(version):
+    "Returns default value for Development Status depending on version"
+    if not version:
+        version = "0.0.0"
+    version = parse_version(version)
+    if version < parse_version("0.1.0"):
+        return "Development Status :: 1 - Planning"
+    if version < parse_version("0.3.0"):
+        return "Development Status :: 2 - Pre-Alpha"
+    if version < parse_version("0.6.0"):
+        return "Development Status :: 3 - Alpha"
+    if version < parse_version("1.0.0"):
+        return "Development Status :: 4 - Beta"
+    if version < parse_version("3.0.0"):
+        return "Development Status :: 5 - Production/Stable"
+    return "Development Status :: 6 - Mature"
+
+
+def get_classifiers(classifiers=None, version=None, **kwargs):
     "Returns the classifiers for the package"
-    # TODO
 
-    classifiers = [
-        "Development Status :: 2 - Pre-Alpha",
-        "Intended Audience :: Developers",
-        "Intended Audience :: Education",
-        "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: BSD License",
-        "Natural Language :: English",
-        "Operating System :: Unix",
-        "Programming Language :: C",
-        "Programming Language :: C++",
-        "Programming Language :: Python :: 3 :: Only",
-        "Topic :: Scientific/Engineering :: Physics",
-    ]
+    classifiers = Classifiers(classifiers or [])
 
-    return current or classifiers
+    if "Intended Audience" not in classifiers:
+        classifiers.update(
+            [
+                "Intended Audience :: Developers",
+                "Intended Audience :: Education",
+                "Intended Audience :: Science/Research",
+            ]
+        )
+
+    classifiers.setdefault(get_dev_status(version))
+    classifiers.setdefault("License :: OSI Approved :: BSD License")
+    classifiers.setdefault("Natural Language :: English")
+    classifiers.setdefault("Operating System :: Unix")
+    classifiers.setdefault("Programming Language :: Python :: 3 :: Only", 2)
+    classifiers.setdefault("Topic :: Scientific/Engineering :: Physics")
+
+    return list(classifiers)

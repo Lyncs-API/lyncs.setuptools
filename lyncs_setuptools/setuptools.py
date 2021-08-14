@@ -70,13 +70,14 @@ def complete_kwargs(*args, **kwargs):
         kwargs["packages"] = packages
 
     kwargs.setdefault("name", packages[0])
-    kwargs["classifiers"] = get_classifiers(kwargs.get("classifiers", None))
 
     dshort, dlong, dtype = find_description()
     kwargs.setdefault("description", dshort)
     kwargs.setdefault("long_description", dlong)
     kwargs.setdefault("long_description_content_type", dtype)
     kwargs.setdefault("keywords", get_keywords(dshort))
+
+    kwargs["classifiers"] = get_classifiers(**kwargs)
 
     if "ext_modules" in kwargs:
         kwargs.setdefault("cmdclass", dict())
