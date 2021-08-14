@@ -6,6 +6,7 @@ __all__ = [
     "CMakeExtension",
     "CMakeBuild",
     "find_package",
+    "WITH_CMAKE",
 ]
 
 import argparse
@@ -14,11 +15,16 @@ import subprocess
 from tempfile import TemporaryDirectory
 from setuptools import Extension
 from setuptools.command.build_ext import build_ext
+from .raiseif import raiseif
 
 try:
     import cmake
-except ModuleNotFoundError as err:
-    raise ModuleNotFoundError("Please install lyncs_setuptools[cmake].") from err
+
+    WITH_CMAKE = True
+except ModuleNotFoundError:
+    WITH_CMAKE = False
+
+mark = raiseif(not WITH_CMAKE, ImportError("Please install `lyncs_setuptools[pylint]`"))
 
 
 class CMakeExtension(Extension):
@@ -94,6 +100,7 @@ class CMakeBuild(build_ext):
             ext.post_build(self, ext)
 
 
+@mark
 def get_version(verbose=False):
     """Returns CMake version"""
     if not verbose:
@@ -125,6 +132,7 @@ endforeach()
 """
 
 
+@mark
 def parse_value(val):
     "Parse a CMake value"
     if not isinstance(val, str):
@@ -142,6 +150,7 @@ def parse_value(val):
     return val
 
 
+@mark
 def find_package(name, clean=True):
     """
     Returns the output of find_package by CMake.
@@ -176,6 +185,7 @@ def find_package(name, clean=True):
     }
 
 
+@mark
 def print_find_package():
     "Returns the values of find_package"
     parser = argparse.ArgumentParser(
@@ -211,6 +221,7 @@ endforeach()
 """
 
 
+@mark
 def get_variables():
     """
     Returns the output of find_package by CMake.
