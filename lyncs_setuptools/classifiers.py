@@ -3,6 +3,10 @@ These are the Lyncs' default classifiers.
 Ref. to https://pypi.org/classifiers/
 """
 
+__all__ = [
+    "get_classifiers",
+]
+
 from packaging.version import parse as parse_version
 
 
