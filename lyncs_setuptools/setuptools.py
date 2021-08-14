@@ -70,7 +70,6 @@ def complete_kwargs(*args, **kwargs):
         kwargs["packages"] = packages
 
     kwargs.setdefault("name", packages[0])
-    kwargs["classifiers"] = get_classifiers(kwargs.get("classifiers", None))
 
     dshort, dlong, dtype = find_description()
     kwargs.setdefault("description", dshort)
@@ -101,6 +100,7 @@ def complete_kwargs(*args, **kwargs):
         add_to_data_files(*files)
 
     kwargs["data_files"] = get_data_files()
+    kwargs["classifiers"] = get_classifiers(**kwargs)
 
     return kwargs
 

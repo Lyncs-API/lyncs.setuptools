@@ -6,15 +6,26 @@ from lyncs_setuptools import (
     find_version,
     get_kwargs,
     print_keys,
-    CMakeExtension,
-    CMakeBuild,
     find_package,
+    WITH_CMAKE,
+    WITH_PYLINT,
 )
-from lyncs_setuptools.cmake import get_version, get_variables
-from lyncs_setuptools.cmake import print_find_package
 from distutils.dist import Distribution
 from lyncs_setuptools import __version__ as version
 from lyncs_setuptools.packages import *
+from lyncs_setuptools.classifiers import get_dev_status
+from lyncs_setuptools.raiseif import raiseif
+
+if WITH_CMAKE:
+    from lyncs_setuptools import CMakeExtension, CMakeBuild
+    from lyncs_setuptools.cmake import get_version, get_variables
+    from lyncs_setuptools.cmake import print_find_package
+
+if WITH_PYLINT:
+    from lyncs_setuptools.pylint import print_pylint_badge
+
+skip_cmake = pytest.mark.skipif(not WITH_CMAKE, reason="cmake not available")
+skip_pylint = pytest.mark.skipif(not WITH_PYLINT, reason="pylint not available")
 
 
 def capture_stdout_and_err(fnc, *args, **kwargs):
@@ -39,6 +50,7 @@ def test_kwargs():
     assert not err
 
 
+@skip_cmake
 def test_cmake():
     dist = Distribution()
     build = CMakeBuild(dist)
@@ -51,6 +63,7 @@ def test_cmake():
     assert not err
 
 
+@skip_cmake
 def test_cmake_find_package():
     assert "MPI_FOUND" in find_package("MPI", clean=False)
     assert "found" in find_package("MPI")
@@ -60,7 +73,9 @@ def test_cmake_find_package():
     assert not err
 
 
+@skip_cmake
 def test_cmake_version():
+    assert get_version() == get_version(verbose=True)
     assert get_version() == get_variables()["CMAKE_VERSION"]
 
 
@@ -79,15 +94,31 @@ def test_packages():
     assert not err
 
 
-try:
-    from lyncs_setuptools.pylint import print_pylint_badge
+def test_dev_status():
+    assert "Planning" in get_dev_status("0.0.0")
+    assert "Planning" in get_dev_status("0.0.9")
+    assert "Pre-Alpha" in get_dev_status("0.1.0")
+    assert "Pre-Alpha" in get_dev_status("0.2.9")
+    assert "Alpha" in get_dev_status("0.3.0")
+    assert "Alpha" in get_dev_status("0.5.9")
+    assert "Beta" in get_dev_status("0.6.0")
+    assert "Beta" in get_dev_status("0.9.9")
+    assert "Stable" in get_dev_status("1.0.0")
+    assert "Stable" in get_dev_status("2.9.9")
+    assert "Mature" in get_dev_status("3.0.0")
+    assert "Mature" in get_dev_status("9.9.9")
 
-    skip_pylint = False
-except ModuleNotFoundError:
-    skip_pylint = True
+
+def test_raiseif():
+    fnc = raiseif(False, RuntimeError())(lambda: "foo")
+    assert fnc() == "foo"
+
+    fnc = raiseif(True, RuntimeError())(lambda: "foo")
+    with pytest.raises(RuntimeError):
+        fnc()
 
 
-@pytest.mark.skipif(skip_pylint, reason="lyncs_setuptools[pylint] not installed")
+@skip_pylint
 def test_pylint():
     sys.argv = ["lyncs_pylint_badge", "."]
     out, err = capture_stdout_and_err(print_pylint_badge, do_exit=False)
