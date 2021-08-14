@@ -77,8 +77,6 @@ def complete_kwargs(*args, **kwargs):
     kwargs.setdefault("long_description_content_type", dtype)
     kwargs.setdefault("keywords", get_keywords(dshort))
 
-    kwargs["classifiers"] = get_classifiers(**kwargs)
-
     if "ext_modules" in kwargs:
         kwargs.setdefault("cmdclass", dict())
         kwargs["cmdclass"].setdefault("build_ext", CMakeBuild)
@@ -102,6 +100,7 @@ def complete_kwargs(*args, **kwargs):
         add_to_data_files(*files)
 
     kwargs["data_files"] = get_data_files()
+    kwargs["classifiers"] = get_classifiers(**kwargs)
 
     return kwargs
 

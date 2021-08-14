@@ -7,6 +7,8 @@ from packaging.version import parse as parse_version
 
 
 class Classifiers(set):
+    "Child of set with tools for managing classifiers"
+
     def __contains__(self, value):
         if not isinstance(value, str):
             return False
@@ -16,6 +18,7 @@ class Classifiers(set):
         return False
 
     def setdefault(self, value, depth=1):
+        "Set default value to classifier if not existing"
         if "::".join(value.split("::")[:depth]) not in self:
             self.add(value)
 
@@ -38,10 +41,10 @@ def get_dev_status(version):
     return "Development Status :: 6 - Mature"
 
 
-def get_classifiers(classifiers=None, version=None, **kwargs):
+def get_classifiers(**kwargs):
     "Returns the classifiers for the package"
 
-    classifiers = Classifiers(classifiers or [])
+    classifiers = Classifiers(kwargs.get("classifiers", ()))
 
     if "Intended Audience" not in classifiers:
         classifiers.update(
@@ -52,7 +55,7 @@ def get_classifiers(classifiers=None, version=None, **kwargs):
             ]
         )
 
-    classifiers.setdefault(get_dev_status(version))
+    classifiers.setdefault(get_dev_status(kwargs.get("classifiers", None)))
     classifiers.setdefault("License :: OSI Approved :: BSD License")
     classifiers.setdefault("Natural Language :: English")
     classifiers.setdefault("Operating System :: Unix")

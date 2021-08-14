@@ -15,6 +15,7 @@ from lyncs_setuptools.cmake import print_find_package
 from distutils.dist import Distribution
 from lyncs_setuptools import __version__ as version
 from lyncs_setuptools.packages import *
+from lyncs_setuptools.classifiers import get_dev_status
 
 
 def capture_stdout_and_err(fnc, *args, **kwargs):
@@ -77,6 +78,21 @@ def test_packages():
     out, err = capture_stdout_and_err(print_packages)
     assert f"lyncs-setuptools=={version}" in out
     assert not err
+
+
+def test_dev_status():
+    assert "Planning" in get_dev_status("0.0.0")
+    assert "Planning" in get_dev_status("0.0.9")
+    assert "Pre-Alpha" in get_dev_status("0.1.0")
+    assert "Pre-Alpha" in get_dev_status("0.2.9")
+    assert "Alpha" in get_dev_status("0.3.0")
+    assert "Alpha" in get_dev_status("0.5.9")
+    assert "Beta" in get_dev_status("0.6.0")
+    assert "Beta" in get_dev_status("0.9.9")
+    assert "Stable" in get_dev_status("1.0.0")
+    assert "Stable" in get_dev_status("2.9.9")
+    assert "Mature" in get_dev_status("3.0.0")
+    assert "Mature" in get_dev_status("9.9.9")
 
 
 try:
