@@ -144,7 +144,7 @@ def print_keys(keys=None):
         sys.exit(1)
 
     if len(keys) == 1:
-        assert keys[0] in kwargs, f"Allowed options are '{\"', '\".join(kwargs)}'"
+        assert keys[0] in kwargs, f"Allowed options are {', '.join(kwargs)}"
         print(kwargs[keys[0]])
     else:
         for key, res in kwargs.items():
