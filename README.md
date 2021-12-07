@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/github/license/Lyncs-API/lyncs.setuptools?logo=github&logoColor=white)](https://github.com/Lyncs-API/lyncs.setuptools/blob/master/LICENSE)
 [![build & test](https://img.shields.io/github/workflow/status/Lyncs-API/lyncs.setuptools/build%20&%20test?logo=github&logoColor=white)](https://github.com/Lyncs-API/lyncs.setuptools/actions)
 [![codecov](https://img.shields.io/codecov/c/github/Lyncs-API/lyncs.setuptools?logo=codecov&logoColor=white)](https://codecov.io/gh/Lyncs-API/lyncs.setuptools)
-
+[![pylint](https://img.shields.io/badge/pylint%20score-9.9%2F10-green?logo=python&logoColor=white)](http://pylint.pycqa.org/)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg?logo=codefactor&logoColor=white)](https://github.com/ambv/black)
 
 In this package we provide a wrap around the standard setutools to be used in Lyncs projects.
