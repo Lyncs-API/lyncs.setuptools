@@ -78,7 +78,7 @@ def complete_kwargs(*args, **kwargs):
     kwargs.setdefault("keywords", get_keywords(dshort))
 
     if "ext_modules" in kwargs:
-        kwargs.setdefault("cmdclass", dict())
+        kwargs.setdefault("cmdclass", {})
         kwargs["cmdclass"].setdefault("build_ext", CMakeBuild)
 
     kwargs.setdefault("install_requires", [])
@@ -117,7 +117,7 @@ def get_kwargs():
     # pylint: disable=global-statement,exec-used
     global _SETUP
     _tmp = _SETUP
-    ret = dict()
+    ret = {}
     _SETUP = ret.update
     with codecs.open("setup.py", encoding="utf-8") as _fp:
         exec(_fp.read())
@@ -144,7 +144,7 @@ def print_keys(keys=None):
         sys.exit(1)
 
     if len(keys) == 1:
-        assert keys[0] in kwargs, "Allowed options are '%s'" % ("', '".join(kwargs))
+        assert keys[0] in kwargs, f"Allowed options are {', '.join(kwargs)}"
         print(kwargs[keys[0]])
     else:
         for key, res in kwargs.items():
@@ -159,4 +159,4 @@ def print_keys(keys=None):
 
             res = res.replace("\n", "\n |  ")
             if not keys or key in keys:
-                print("%s: %s\n" % (key, res))
+                print(f"{key}: {res}\n")
