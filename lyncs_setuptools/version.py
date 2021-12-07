@@ -46,7 +46,7 @@ def find_version(filename=None):
             except AssertionError:
                 pass
 
-    assert version, """
+    assert version, f"""
     Couldn't find a compatible filename.
     Options are {", ".join(options)}"""
 

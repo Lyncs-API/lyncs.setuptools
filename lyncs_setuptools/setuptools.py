@@ -159,4 +159,4 @@ def print_keys(keys=None):
 
             res = res.replace("\n", "\n |  ")
             if not keys or key in keys:
-                print("{key}: {res}\n")
+                print(f"{key}: {res}\n")
