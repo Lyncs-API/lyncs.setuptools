@@ -82,9 +82,9 @@ class CMakeBuild(build_ext):
         build_args += ["--", "-j", str(abs(os.cpu_count() - 1) or 1)]
 
         env = os.environ.copy()
-        env["CXXFLAGS"] = '{} -DVERSION_INFO=\\"{}\\"'.format(
-            env.get("CXXFLAGS", ""), self.distribution.get_version()
-        )
+        env[
+            "CXXFLAGS"
+        ] = f'{env.get("CXXFLAGS", "")} -DVERSION_INFO=\\"{self.distribution.get_version()}\\"'
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
 
@@ -159,7 +159,7 @@ def find_package(name, clean=True):
     """
 
     with TemporaryDirectory() as temp_dir:
-        with open(temp_dir + "/CMakeLists.txt", "w") as cmake_file:
+        with open(temp_dir + "/CMakeLists.txt", "w", encoding="utf-8") as cmake_file:
             cmake_file.write(CMAKE_FIND % name)
 
         out = subprocess.check_output(
@@ -230,7 +230,7 @@ def get_variables():
     """
 
     with TemporaryDirectory() as temp_dir:
-        with open(temp_dir + "/CMakeLists.txt", "w") as cmake_file:
+        with open(temp_dir + "/CMakeLists.txt", "w", encoding="utf-8") as cmake_file:
             cmake_file.write(CMAKE_VARS)
 
         out = subprocess.check_output(

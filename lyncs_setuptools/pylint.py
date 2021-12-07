@@ -60,10 +60,7 @@ def print_pylint_badge(do_exit=True, **kwargs):
     with redirect_stdout(sys.stderr):
         results = run_pylint(do_exit=False, **kwargs)
 
-    try:
-        score = results.linter.stats["global_note"]
-    except TypeError:
-        score = results.linter.stats.global_note
+    score = results.linter.stats.global_note
     colors = OrderedDict(
         {
             9.95: "brightgreen",
@@ -81,8 +78,7 @@ def print_pylint_badge(do_exit=True, **kwargs):
             break
 
     print(
-        "[![pylint](https://img.shields.io/badge/pylint%%20score-%.1f%%2F10-%s?logo=python&logoColor=white)](http://pylint.pycqa.org/)"
-        % (score, color)
+        f"[![pylint](https://img.shields.io/badge/pylint%20score-{score:.1f}%2F10-{color}?logo=python&logoColor=white)](http://pylint.pycqa.org/)"
     )
 
     if not do_exit:

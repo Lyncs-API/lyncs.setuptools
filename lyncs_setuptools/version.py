@@ -48,9 +48,7 @@ def find_version(filename=None):
 
     assert version, """
     Couldn't find a compatible filename.
-    Options are %s""" % ", ".join(
-        options
-    )
+    Options are {", ".join(options)}"""
 
     if not filename.endswith(".py"):
         add_to_data_files(filename)
