@@ -60,7 +60,10 @@ def print_pylint_badge(do_exit=True, **kwargs):
     with redirect_stdout(sys.stderr):
         results = run_pylint(do_exit=False, **kwargs)
 
-    score = results.linter.stats["global_note"]
+    try:
+        score = results.linter.stats["global_note"]
+    except TypeError:
+        score = results.linter.stats.global_note
     colors = OrderedDict(
         {
             9.95: "brightgreen",
