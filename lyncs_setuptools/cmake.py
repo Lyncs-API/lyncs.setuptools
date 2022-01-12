@@ -24,7 +24,7 @@ try:
 except ModuleNotFoundError:
     WITH_CMAKE = False
 
-mark = raiseif(not WITH_CMAKE, ImportError("Please install `lyncs_setuptools[pylint]`"))
+mark = raiseif(not WITH_CMAKE, ImportError("Please install `lyncs_setuptools[cmake]`"))
 
 
 class CMakeExtension(Extension):
