@@ -16,12 +16,19 @@ from . import __path__
 
 try:
     from pylint.lint import Run
-    import enchant
     from lyncs_utils import redirect_stdout
 
     WITH_PYLINT = True
 except ModuleNotFoundError:
     WITH_PYLINT = False
+
+try:
+    import enchant
+
+    WITH_ENCHANT = True
+except ImportError as err:
+    WITH_ENCHANT = False
+    WITH_ENCHANT_ERROR = err
 
 mark = raiseif(
     not WITH_PYLINT, ImportError("Please install `lyncs_setuptools[pylint]`")
@@ -29,7 +36,7 @@ mark = raiseif(
 
 
 @mark
-def run_pylint(do_exit=True, spelling=True):
+def run_pylint(do_exit=True, spelling=WITH_ENCHANT):
     "Runs the pylint executable with some additional options"
 
     if "." in sys.argv:
@@ -39,6 +46,9 @@ def run_pylint(do_exit=True, spelling=True):
             if pkg.split(".")[0] not in pkgs:
                 pkgs.append(pkg)
         sys.argv += pkgs
+
+    if spelling and not WITH_ENCHANT:
+        raise WITH_ENCHANT_ERROR
 
     if spelling and "spelling" not in sys.argv and enchant.dict_exists("en"):
         sys.argv += [

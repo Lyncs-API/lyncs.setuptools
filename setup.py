@@ -12,6 +12,7 @@ setup(
         ]
     },
     install_requires=[
+        "setuptools",
         "gitpython",
         "pip",
         "packaging",
