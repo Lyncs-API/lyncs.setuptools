@@ -82,9 +82,9 @@ class CMakeBuild(build_ext):
         build_args += ["--", "-j", str(abs(os.cpu_count() - 1) or 1)]
 
         env = os.environ.copy()
-        env[
-            "CXXFLAGS"
-        ] = f'{env.get("CXXFLAGS", "")} -DVERSION_INFO=\\"{self.distribution.get_version()}\\"'
+        env["CXXFLAGS"] = (
+            f'{env.get("CXXFLAGS", "")} -DVERSION_INFO=\\"{self.distribution.get_version()}\\"'
+        )
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
 
