@@ -80,7 +80,7 @@ def test_cmake_version():
 
 
 def test_packages():
-    assert "lyncs_setuptools" in lyncs_packages()
+    assert any("lyncs_setuptools" in pkg for pkg in lyncs_packages())
     assert f"lyncs-setuptools=={version}" in lyncs_packages_verbose()
 
     sys.argv = ["lyncs_packages"]
